@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.lineicons.com/2.0/LineIcons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <title>Document</title>
+</head>
+<body style="text-align: center;">
+    <h1>Currency Converter</h1>
+    <form class="form-inline">
+        <div class="form-group">
+            <label for="number" >Amount</label><br>
+            <input type="text" class="form-control" placeholder="enter amount" id="amount">
+        </div>
+        <div class="form-group">
+            <label for="text">From</label><br>
+            <input type="text" class="form-control" placeholder="convertFrom" id="base">
+            <i class="lni lni-arrow-right-circle"></i>
+        </div>
+        
+        <div class="form-group">    
+        <label for="text">To</label><br>    
+        <input type="text" class="form-control" placeholder="converTo" id="currency">
+
+        </div>
+        <input type="submit" id="submit" class="btn btn-primary btn-lg" style="margin: 30px 250px ;">
+    </form>
+    <p id="result"></p>  
+</body>
+<script>
+    
+    document.querySelector("form").onsubmit = () => {
+        const currency = document.querySelector("#currency").value.toUpperCase();
+        const base = document.querySelector("#base").value.toUpperCase();
+        const amount = document.querySelector("#amount").value;
+        fetch(`https://api.exchangeratesapi.io/latest?base=${base}`)
+    .then(response => response.json())
+    .then(data => {
+        const rates = data.rates[currency]*amount;
+        const baseCurr = data.base;
+        if(rates != undefined){
+            document.querySelector("#result").innerHTML = `${amount} ${baseCurr} is equals to ${rates.toFixed(3)} ${currency}.`;
+            console.log(data[rates]);
+        }
+        else {
+            document.querySelector("#result").innerHTML = "Invalid Input :|";
+        }
+        })
+        .catch(error => {
+            console.log("Error!",error);
+        })
+        return false;
+       
+}
+    
+
+</script>
+</html>
